@@ -2,11 +2,11 @@
 Arch linux setup notes - WIP
 
 # References
-Arch Wiki, what else?
-https://wiki.archlinux.org/index.php/Installation_guide
-https://ix5.org/tech/2018/arch-install/
-https://wiki.archlinux.org/index.php/User:Altercation/Bullet_Proof_Arch_Install
-https://github.com/egara/arch-btrfs-installation
+Arch Wiki first and foremost...
+ - https://wiki.archlinux.org/index.php/Installation_guide
+ - https://wiki.archlinux.org/index.php/User:Altercation/Bullet_Proof_Arch_Install
+ - https://github.com/egara/arch-btrfs-installation
+ - https://ix5.org/tech/2018/arch-install/
 
 # Prerequisites, assumptions
  - Hardware: EFI capable laptop with empty SSD and enough RAM; Intel GPU
