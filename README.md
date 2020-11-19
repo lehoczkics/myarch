@@ -79,6 +79,7 @@ btrfs subvolume create _snapshots
 
 # Mount the layout inside /mnt
 ```
+cd
 umount -R /mnt
 mount -t btrfs -o subvol=_active/rootfs,$o_btrfs LABEL=system /mnt
 mount -t btrfs -o subvol=_active/home,$o_btrfs LABEL=system /mnt/home
