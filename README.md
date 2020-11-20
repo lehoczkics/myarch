@@ -108,15 +108,9 @@ arch-chroot /mnt
 pacman -Syu base-devel btrfs-progs iw gptfdisk terminus-font linux-lts zsh vim efibootmgr grub linux-firmware intel-ucode cryptsetup coreutils
 ```
 
-Generate keyfile and add it to luks:
+Add cryptsystem to crypttab
 ```
-dd bs=512 count=4 if=/dev/random of=/crypto_keyfile.bin iflag=fullblock
-chmod 0400 /crypto_keyfile.bin
-cryptsetup luksAddKey /dev/disk/by-partlabel/cryptsystem /crypto_keyfile.bin
-```
-Add it to crypttab:
-```
-echo "system    /dev/disk/by-partlabel/cryptsystem  /crypto_keyfile.bin  luks" >> /etc/crypttab
+echo "system    /dev/disk/by-partlabel/cryptsystem  none  luks" >> /etc/crypttab
 ```
 
 ## Other configuration based on Arch Installation Guide
@@ -141,7 +135,6 @@ Edit **/etc/hosts**:
 edit /etc/mkinitcpio.conf
 ```
 MODULES="crc32c-intel vfat i915"
-FILES="/crypto_keyfile.bin"
 HOOKS="base udev autodetect modconf block keyboard keymap encrypt filesystems"
 ```
 and generate intramfs:
@@ -150,12 +143,17 @@ mkinitcpio -p linux-lts
 ```
 
 # Configure and install the boot loader
-
-Edit **/etc/default/grub** First add<br>
-`GRUB_ENABLE_CRYPTODISK=y`<br>
-to the end of the file; then alter the **GRUB_CMDLINE** lines like this:
+Get encrypted partition UUID:
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 noresume"
+DISKUUID=$(lsblk -f | grep crypto | awk '{ print $4}')
+echo $DISKUUID
+```
+
+Insert above UUID into **/etc/default/grub** 
+```
+GRUB_ENABLE_CRYPTODISK=y
+
+GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=UUID=$DISKUUID:system root=/dev/mapper/system net.ifnames=0 biosdevname=0 noresume"
 GRUB_CMDLINE_LINUX="quiet"
 ```
 (because I like good old interface names like eth0 and wlan0)
