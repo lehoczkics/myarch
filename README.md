@@ -141,7 +141,8 @@ Edit **/etc/hosts**:
 edit /etc/mkinitcpio.conf
 ```
 MODULES="crc32c-intel vfat i915"
-HOOKS="base udev autodetect modconf block keyboard keymap encrypt filesystems btrfs systemd sd-vconsole sd-encrypt"
+FILES="/crypto_keyfile.bin"
+HOOKS="base udev autodetect modconf block keyboard keymap encrypt filesystems"
 ```
 and generate intramfs:
 ```
@@ -154,7 +155,7 @@ Edit **/etc/default/grub** First add<br>
 `GRUB_ENABLE_CRYPTODISK=y`<br>
 to the end of the file; then alter the **GRUB_CMDLINE** lines like this:
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/mapper/system root=/dev/mapper/system net.ifnames=0 biosdevname=0 noresume"
+GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 noresume"
 GRUB_CMDLINE_LINUX="quiet"
 ```
 (because I like good old interface names like eth0 and wlan0)
